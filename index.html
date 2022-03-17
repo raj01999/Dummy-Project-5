@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./assignment6.css">
+	<title>Add Thread</title>
+</head>
+
+<body>
+	<div id="container" class="container">
+
+		<!-- Start your code from here -->
+
+		<div class="leftSide">
+			<div class="counter">
+				<div>Characters: <span id="characterCount">0</span></div>
+				<div>Threads: <span id="threadCount">0</span></div>
+			</div>
+
+			<div class="inputArea">
+				<textarea name="input" id="input" placeholder="Please! Type your text here"></textarea>
+				<button id="btn" class="btn">Thread</button>
+			</div>
+		</div>
+
+		<div class="rightSide">
+			<p class="para">Your Threads will appear here &#128293;</p>
+			<p class="para">&#9888; The character limit for each threads is 275</p>
+			<div id="displayArea"></div>
+
+		</div>
+	</div>
+
+	<!-- End your code -->
+
+	</div>
+
+	<script type="text/javascript">
+		// write your javascript code here
+
+		//This area for counting charecter and couting threads in text area
+		document.getElementById("input").addEventListener("input", (e) => {
+			let characterCount = document.getElementById("characterCount");
+			characterCount.innerHTML = input.value.length;
+
+			let res;
+			if ((input.value.length % 275) === 0) {
+				res = parseInt(input.value.length / 275);
+			}
+			else {
+				res = parseInt(input.value.length / 275) + 1;
+			}
+			document.getElementById("threadCount").innerHTML = res;
+
+		});
+
+		// Everything Below here are for populating the documet.
+		let li = [];
+		document.getElementById("btn").addEventListener("click", (e) => {
+			let input = document.getElementById("input");
+
+			// Through aleart on no input
+			if (!input.value.length) {
+				alert("Please! give some input");
+				return;
+			}
+
+			let html = input.value[0], count = 1;
+
+			// Deviding the string with 275 chrecter per Thread
+			for (let i = 1; i < input.value.length; i++) {
+				if (count < 275) {
+					html += input.value[i];
+					count++;
+				}
+				else {
+					li.push(html);
+					html = input.value[i];
+					count = 1;
+				}
+			}
+			li.push(html);
+
+			populateDom(li);
+
+			input.value = "";
+
+			// After adding the Thred Charecter count become 0
+			document.getElementById("characterCount").innerHTML = 0;
+
+			// After adding the Thred Charecter count become 0
+			document.getElementById("threadCount").innerHTML = 0;
+
+		});
+
+		// Populating the string to our Dom as Thread
+		function populateDom(list) {
+			html = "";
+			let displayArea = document.getElementById("displayArea");
+			list.forEach((ele, idx) => {
+				html += `<div class="thread">
+					<div class= "head">
+    				<h4>Thread: ${idx + 1}</h4>
+					<h6>${new Date()}</h6>
+					</div>
+    				<p class= "paragraph">${ele}</p>
+   	 				<button id="btnid${idx}" class="btn" onclick="deleting(this.id)">Delete</button>
+					</div>`;
+			});
+			displayArea.innerHTML = html;
+
+		}
+
+		//Delete Fucntion 
+		function deleting(divid) {
+			let idx = divid.replace("btnid", "");
+			li.splice(idx, 1);
+			populateDom(li);
+		}
+
+
+	</script>
+
+</body>
+
+</html>
